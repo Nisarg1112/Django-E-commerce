@@ -53,23 +53,40 @@
         <div class="row align-items-center">
             <div class="col-xl-2 col-lg-2">
                 <div class="logo">
-                    <a href="index.html"><img src="{% static ''%}assets/images/logo/logo.png" alt="logo"></a>
+                    <a href="index.html"><img src="{% static '' %}assets/images/logo/logo.png" alt="logo"></a>
                 </div>
             </div>
+
+            <script>
+                $(function () {
+                    $("#query").autocomplete({
+                        source: "/search_auto/",
+                        select: function (event, ui) { //item selected
+                            AutoCompleteSelectHandler(event, ui)
+                        },
+                        minLength: 2,
+                    });
+                });
+
+                function AutoCompleteSelectHandler(event, ui) {
+                    var selectedObj = ui.item;
+                }
+
+            </script>
+
             <div class="col-xl-7 col-lg-7">
                 <div class="categori-search-wrap">
                     <div class="categori-style-1">
-                        <select class="nice-select nice-select-style-1">
-                            <option>All Categories</option>
-                            <option>Clothing</option>
-                            <option>T-Shirt</option>
-                            <option>Shoes</option>
-                            <option>Jeans</option>
+                        <select name="category_id" class="nice-select nice-select-style-1">
+                            <option value="0">All Categories</option>
+                            <option value="1">Clothing</option>
+                            <option value="2">T-Shirt</option>
                         </select>
                     </div>
                     <div class="search-wrap-3">
-                        <form action="#">
-                            <input placeholder="Search Products..." type="text">
+                        <form action="{% url 'search' %}" method="post">
+                            {% csrf_token %}
+                            <input id="query" name="query" placeholder="Search Products..." type="text">
                             <button><i class="lnr lnr-magnifier"></i></button>
                         </form>
                     </div>
@@ -77,16 +94,26 @@
             </div>
             <div class="col-xl-3 col-lg-3">
                 <div class="header-action header-action-flex">
-                    <div class="same-style-2 same-style-2-font-inc">
-                        <a href="login-register.html"><i class="icon-user"></i></a>
-                    </div>
+                    {% if user.id is not None %}
+                        <div class="same-style-2 same-style-2-font-inc">
+                            <a href="{% url 'my_account' %}"><img src="{{ request.session.userimage }}"
+                                                                  style="height: 70px; border-radius: 30%"
+                                                                  alt="">{{ user.first_name }}</img></a>
+                        </div>
+                    {% else %}
+                        <div class="same-style-2 same-style-2-font-inc">
+                            <a href="/login/" style="font-size:17px">Login<i class="icon-user" ></i></a>
+                        <a href="/signup/" style="font-size:17px">SignUp<i class="icon-user"></i></a>
+                        </div>
+
+                    {% endif %}
                     <div class="same-style-2 same-style-2-font-inc">
                         <a href="wishlist.html"><i class="icon-heart"></i><span class="pro-count green">03</span></a>
                     </div>
                     <div class="same-style-2 same-style-2-font-inc header-cart">
-                        <a class="cart-active" href="#">
-                            <i class="icon-basket-loaded"></i><span class="pro-count green">02</span>
-                            <span class="cart-amount">$2,435.30</span>
+                        <a href="/addtoshopcart/">
+                            <i class="icon-basket-loaded"></i><span class="pro-count green">{{ count }}</span>
+                            <span class="cart-amount">$ {{ total }}</span>
                         </a>
                     </div>
                 </div>

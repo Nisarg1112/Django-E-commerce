@@ -14,15 +14,30 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+import sys
+
+sys.path.append('..')
 from django.urls import path
 from . import views
+from order import views as OrderViews
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('about/', views.about, name='AboutUs'),
-    path('contact/', views.contact, name='ContactUs'),
-    path('tracker', views.tracker, name='TrackingStatus'),
-    path('search', views.search, name='Search'),
-    path('productview', views.proview, name='ProductView'),
-    path('checkout', views.checkout, name='Checkout'),
+    path('search/', views.search, name='search'),
+    path('search_auto/', views.search_auto, name='search_auto'),
+    path('about-us/', views.about, name='AboutUs'),
+    path('contact/', views.contact_us, name='contact_us'),
+    path('tracker/', views.track, name='track'),
+    path('checkout/', views.checkout, name='checkout'),
+    path('addtoshopcart/', views.shopcart, name='shopcart'),
+    path('my_account/', views.my_account, name='my_account'),
+    path('wishlist/', views.wishlist, name='wishlist'),
+    path('compare/', views.compare, name='compare'),
+    path('login/', views.login_, name='login'),
+    path('logout/', views.logout_func, name='logout_func'),
+    path('signup/', views.signup, name='signup'),
+    path('contact_submit/', views.contact_submit, name='contact_submit'),
+    path('home/', views.home, name='home'),
+    path('category/<int:id>/<slug:slug>', views.category_products, name='category_products'),
+    path('product/<int:id>/<slug:slug>', views.product_detail, name='product_detail'),
 ]

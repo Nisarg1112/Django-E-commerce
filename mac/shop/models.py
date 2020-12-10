@@ -1,10 +1,18 @@
 from django.db import models
 
-
 # Create your models here.
+from django.forms import ModelForm, TextInput
 
-class Product(models.Model):
-    product_id = models.AutoField
-    product_name = models.CharField(max_length=50)
-    product_desc = models.CharField(max_length=300)
-    pub_date = models.DateField()
+
+class Contact_Message(models.Model):
+    STATUS = (('New', 'New'), ('Read', 'Read'), ('Closed', 'Closed'))
+    name = models.CharField(max_length=150, blank=True)
+    email = models.CharField(max_length=255, blank=True)
+    subject = models.CharField(max_length=255, blank=True)
+    message = models.TextField(max_length=255, blank=True)
+    status = models.CharField(max_length=10, choices=STATUS, default='New')
+    create_at = models.DateTimeField(auto_now_add=True)
+    update_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
